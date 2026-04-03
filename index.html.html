@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills · Melisa Belén Gómez</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --purple: #4F46A8;
+    --purple-light: #EEEDFE;
+    --purple-mid: #AFA9EC;
+    --dark: #1A1A2E;
+    --gray: #6B7280;
+    --light: #F8F7FF;
+    --white: #FFFFFF;
+    --border: #E5E3F5;
+    --teal: #0F6E56;
+    --teal-light: #E1F5EE;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--light);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 40px 24px;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 44px 52px;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 4px 40px rgba(79, 70, 168, 0.07);
+    border: 1px solid var(--border);
+  }
+
+  .section {
+    margin-bottom: 32px;
+  }
+
+  .section:last-child {
+    margin-bottom: 0;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--purple-mid);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* BARRAS */
+  .skill-row {
+    display: grid;
+    grid-template-columns: 190px 1fr 36px;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+    opacity: 0;
+    transform: translateX(-6px);
+    animation: fadeIn 0.45s forwards;
+  }
+
+  .skill-row:nth-child(1) { animation-delay: 0.05s; }
+  .skill-row:nth-child(2) { animation-delay: 0.10s; }
+  .skill-row:nth-child(3) { animation-delay: 0.15s; }
+  .skill-row:nth-child(4) { animation-delay: 0.20s; }
+  .skill-row:nth-child(5) { animation-delay: 0.25s; }
+
+  @keyframes fadeIn {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .skill-name {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--dark);
+  }
+
+  .bar-track {
+    height: 6px;
+    background: var(--purple-light);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--purple) 0%, #7C75D4 100%);
+    width: 0%;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .bar-fill.teal {
+    background: linear-gradient(90deg, var(--teal) 0%, #1D9E75 100%);
+  }
+
+  .bar-fill.animated {
+    width: var(--target-width);
+  }
+
+  .pct {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--purple);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pct.teal { color: var(--teal); }
+
+  /* TAGS */
+  .tags-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .tag {
+    font-size: 12px;
+    color: var(--purple);
+    background: var(--purple-light);
+    border-radius: 6px;
+    padding: 5px 11px;
+    border: 1px solid var(--border);
+  }
+
+  /* IDIOMAS */
+  .lang-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .lang-card {
+    background: var(--light);
+    border-radius: 10px;
+    padding: 13px 15px;
+    border: 1px solid var(--border);
+  }
+
+  .lang-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--dark);
+    margin-bottom: 3px;
+  }
+
+  .lang-level {
+    font-size: 11px;
+    color: var(--gray);
+    font-weight: 300;
+    margin-bottom: 9px;
+  }
+
+  .lang-dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .dot.filled { background: var(--purple); }
+  .dot.half { background: var(--purple-mid); }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- SKILLS DISTINTIVAS -->
+  <div class="section">
+    <div class="section-label">Habilidades distintivas</div>
+
+    <div class="skill-row">
+      <span class="skill-name">Acompañamiento personalizado</span>
+      <div class="bar-track"><div class="bar-fill" style="--target-width: 95%"></div></div>
+      <span class="pct">95%</span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-name">Comunicación educativa</span>
+      <div class="bar-track"><div class="bar-fill" style="--target-width: 92%"></div></div>
+      <span class="pct">92%</span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-name">Diseño instruccional</span>
+      <div class="bar-track"><div class="bar-fill" style="--target-width: 88%"></div></div>
+      <span class="pct">88%</span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-name">Facilitación y talleres</span>
+      <div class="bar-track"><div class="bar-fill" style="--target-width: 88%"></div></div>
+      <span class="pct">88%</span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-name">Redacción y contenido</span>
+      <div class="bar-track"><div class="bar-fill" style="--target-width: 90%"></div></div>
+      <span class="pct">90%</span>
+    </div>
+  </div>
+
+  <!-- HERRAMIENTAS -->
+  <div class="section">
+    <div class="section-label">Herramientas</div>
+
+    <div class="skill-row">
+      <span class="skill-name">Canva</span>
+      <div class="bar-track"><div class="bar-fill teal" style="--target-width: 82%"></div></div>
+      <span class="pct teal">82%</span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-name">Adobe Suite</span>
+      <div class="bar-track"><div class="bar-fill teal" style="--target-width: 78%"></div></div>
+      <span class="pct teal">78%</span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-name">Google Workspace</span>
+      <div class="bar-track"><div class="bar-fill teal" style="--target-width: 85%"></div></div>
+      <span class="pct teal">85%</span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-name">Notion · Loom</span>
+      <div class="bar-track"><div class="bar-fill teal" style="--target-width: 62%"></div></div>
+      <span class="pct teal">62%</span>
+    </div>
+  </div>
+
+  <!-- TRANSVERSALES -->
+  <div class="section">
+    <div class="section-label">Transversales</div>
+    <div class="tags-grid">
+      <span class="tag">Escucha activa</span>
+      <span class="tag">Acompañamiento emocional</span>
+      <span class="tag">Resolución de conflictos</span>
+      <span class="tag">Autonomía</span>
+      <span class="tag">Creatividad pedagógica</span>
+      <span class="tag">Articulación institucional</span>
+    </div>
+  </div>
+
+  <!-- IDIOMAS -->
+  <div class="section">
+    <div class="section-label">Idiomas</div>
+    <div class="lang-grid">
+      <div class="lang-card">
+        <div class="lang-name">Español</div>
+        <div class="lang-level">Nativo</div>
+        <div class="lang-dots">
+          <div class="dot filled"></div>
+          <div class="dot filled"></div>
+          <div class="dot filled"></div>
+          <div class="dot filled"></div>
+          <div class="dot filled"></div>
+        </div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-name">Inglés</div>
+        <div class="lang-level">A2 · En progreso hacia B1</div>
+        <div class="lang-dots">
+          <div class="dot filled"></div>
+          <div class="dot filled"></div>
+          <div class="dot half"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.bar-fill').forEach(bar => {
+        bar.classList.add('animated');
+      });
+    }, 200);
+  });
+</script>
+</body>
+</html>
