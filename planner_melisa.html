@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planner · Melisa Gómez</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#1C1917;
+  --ink2:#44403C;
+  --muted:#78716C;
+  --faint:#F5F4F0;
+  --white:#FFFFFF;
+  --border:#E7E5E4;
+
+  --tesis:#B91C1C;
+  --tesis-bg:#FEF2F2;
+  --tesis-border:#FECACA;
+
+  --li:#4338CA;
+  --li-bg:#EEF2FF;
+  --li-border:#C7D2FE;
+
+  --di:#047857;
+  --di-bg:#ECFDF5;
+  --di-border:#A7F3D0;
+
+  --port:#B45309;
+  --port-bg:#FFFBEB;
+  --port-border:#FDE68A;
+
+  --en:#0F766E;
+  --en-bg:#F0FDFA;
+  --en-border:#99F6E4;
+
+  --bus:#6D28D9;
+  --bus-bg:#F5F3FF;
+  --bus-border:#DDD6FE;
+}
+
+body{
+  font-family:'Outfit',sans-serif;
+  background:#FAFAF9;
+  color:var(--ink);
+  padding:32px 20px 60px;
+  min-height:100vh;
+}
+
+.wrap{max-width:900px;margin:0 auto;}
+
+/* HEADER */
+.top{margin-bottom:32px;}
+.top-eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.top-title{font-family:'Playfair Display',serif;font-size:32px;color:var(--ink);line-height:1.2;margin-bottom:6px;}
+.top-sub{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.leg{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--white);}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* HORARIO */
+.schedule{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:24px;}
+.block-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.sch-row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--faint);font-size:13px;}
+.sch-row:last-child{border-bottom:none;}
+.sch-time{font-weight:600;min-width:110px;color:var(--ink2);font-size:12px;}
+.sch-act{color:var(--muted);}
+.sch-act.hi{color:var(--li);font-weight:500;}
+.sch-act.tesis{color:var(--tesis);font-weight:500;}
+
+/* SPRINT TESIS */
+.sprint{background:var(--tesis-bg);border:1px solid var(--tesis-border);border-radius:14px;padding:18px 22px;margin-bottom:24px;}
+.sprint-title{font-size:13px;font-weight:600;color:var(--tesis);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.sprint-row{display:flex;gap:12px;padding:7px 0;border-bottom:1px solid var(--tesis-border);font-size:12.5px;color:#7F1D1D;}
+.sprint-row:last-child{border-bottom:none;}
+.sprint-wk{font-weight:600;min-width:72px;color:var(--tesis);}
+
+/* MONTH SECTION */
+.month-section{margin-bottom:32px;}
+.month-label{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.month-pill{font-size:12px;font-weight:600;padding:5px 16px;border-radius:20px;color:var(--white);}
+.m1 .month-pill{background:var(--li);}
+.m2 .month-pill{background:var(--di);}
+.m3 .month-pill{background:var(--bus);}
+.month-focus{font-size:12px;color:var(--muted);}
+
+/* WEEK CARD */
+.week-card{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;}
+.week-head{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--faint);border-bottom:1px solid var(--border);}
+.week-name{font-size:12px;font-weight:600;color:var(--ink2);letter-spacing:.04em;}
+.week-date{font-size:11px;color:var(--muted);}
+.week-body{padding:4px 6px 8px;}
+
+/* TASK */
+.task{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:8px;margin-top:3px;cursor:pointer;transition:background .15s;}
+.task:hover{background:var(--faint);}
+.task.done .task-title{text-decoration:line-through;opacity:.5;}
+.task.done .check{background:var(--ink);border-color:var(--ink);}
+.task.done .check::after{opacity:1;}
+
+.check{
+  width:17px;height:17px;border-radius:4px;
+  border:1.5px solid var(--border);
+  flex-shrink:0;margin-top:2px;
+  position:relative;transition:all .15s;
+}
+.check::after{
+  content:'';position:absolute;
+  left:3px;top:1px;
+  width:9px;height:6px;
+  border-left:2px solid #fff;
+  border-bottom:2px solid #fff;
+  transform:rotate(-45deg);
+  opacity:0;transition:opacity .15s;
+}
+
+.task-body{flex:1;}
+.task-title{font-size:13px;color:var(--ink);line-height:1.4;margin-bottom:3px;}
+.task-detail{font-size:11.5px;color:var(--muted);line-height:1.5;}
+
+.tag{
+  display:inline-block;font-size:10px;font-weight:600;
+  padding:2px 7px;border-radius:10px;margin-left:5px;
+  vertical-align:middle;letter-spacing:.02em;
+}
+.t-tesis{background:var(--tesis-bg);color:var(--tesis);border:1px solid var(--tesis-border);}
+.t-li{background:var(--li-bg);color:var(--li);border:1px solid var(--li-border);}
+.t-di{background:var(--di-bg);color:var(--di);border:1px solid var(--di-border);}
+.t-port{background:var(--port-bg);color:var(--port);border:1px solid var(--port-border);}
+.t-en{background:var(--en-bg);color:var(--en);border:1px solid var(--en-border);}
+.t-bus{background:var(--bus-bg);color:var(--bus);border:1px solid var(--bus-border);}
+
+/* DIVIDER */
+.div{border:none;border-top:1px solid var(--border);margin:28px 0;}
+
+/* PROGRESS */
+.progress-bar{height:3px;border-radius:2px;background:var(--border);margin-top:10px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:2px;background:var(--li);width:0;transition:width 1s cubic-bezier(.4,0,.2,1);}
+
+/* FOOTER */
+.footer{font-size:12px;color:var(--muted);text-align:center;line-height:1.8;padding:16px 20px;background:var(--white);border:1px solid var(--border);border-radius:14px;}
+.footer strong{color:var(--ink2);}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-align:center;}
+.stat-num{font-family:'Playfair Display',serif;font-size:26px;color:var(--ink);display:block;margin-bottom:2px;}
+.stat-label{font-size:11px;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="top">
+  <div class="top-eyebrow">Plan de acción · 3 meses</div>
+  <h1 class="top-title">Planner · Melisa Gómez</h1>
+  <p class="top-sub">Trabajo 13–17 hs · Tesis en redacción · 1 hora disponible/día (17–18 hs) · Inglés en el instituto</p>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><span class="stat-num" id="total-tasks">0</span><span class="stat-label">Tareas totales</span></div>
+  <div class="stat"><span class="stat-num" id="done-tasks">0</span><span class="stat-label">Completadas</span></div>
+  <div class="stat"><span class="stat-num" id="pct-tasks">0%</span><span class="stat-label">Progreso</span></div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="main-bar"></div></div>
+
+<!-- LEYENDA -->
+<div class="legend" style="margin-top:16px;">
+  <div class="leg"><div class="leg-dot" style="background:#B91C1C"></div>Tesis</div>
+  <div class="leg"><div class="leg-dot" style="background:#4338CA"></div>LinkedIn</div>
+  <div class="leg"><div class="leg-dot" style="background:#047857"></div>Formación DI</div>
+  <div class="leg"><div class="leg-dot" style="background:#B45309"></div>Portafolio</div>
+  <div class="leg"><div class="leg-dot" style="background:#0F766E"></div>Inglés</div>
+  <div class="leg"><div class="leg-dot" style="background:#6D28D9"></div>Búsqueda</div>
+</div>
+
+<div class="div"></div>
+
+<!-- HORARIO -->
+<div class="schedule">
+  <div class="block-label">Tu día base</div>
+  <div class="sch-row"><span class="sch-time">Mañana</span><span class="sch-act tesis">Tesis — escritura Capítulo 1 (bloque protegido, no negociable)</span></div>
+  <div class="sch-row"><span class="sch-time">13:00 – 17:00</span><span class="sch-act">Trabajo · European Open Business School</span></div>
+  <div class="sch-row"><span class="sch-time">17:00 – 18:00</span><span class="sch-act hi">Tu hora · Formación / Portafolio / LinkedIn / Inglés</span></div>
+  <div class="sch-row"><span class="sch-time">Noche</span><span class="sch-act">Descanso — no negociable</span></div>
+</div>
+
+<!-- SPRINT TESIS -->
+<div class="sprint">
+  <div class="sprint-title">⚡ Sprint Tesis · Capítulo 1 en 3 semanas</div>
+  <div class="sprint-row"><span class="sprint-wk">Semana 1</span><span>Marco teórico en borrador. Escribir sin editar — flujo libre. Meta: esqueleto completo del capítulo.</span></div>
+  <div class="sprint-row"><span class="sprint-wk">Semana 2</span><span>Desarrollar argumentos centrales y articular con el corpus. Primera versión completa — buscar completud, no perfección.</span></div>
+  <div class="sprint-row"><span class="sprint-wk">Semana 3</span><span>Revisión, edición y ajuste de citas. Versión para enviar a la directora. Viernes: releer en frío.</span></div>
+</div>
+
+<div class="div"></div>
+
+<!-- ===== MES 1 ===== -->
+<div class="month-section m1">
+  <div class="month-label">
+    <span class="month-pill">Mes 1 · Abril – Mayo</span>
+    <span class="month-focus">Tesis + Visibilidad + Primeros pasos en formación</span>
+  </div>
+
+  <div class="week-card">
+    <div class="week-head"><span class="week-name">Semana 1</span><span class="week-date">7 de abril</span></div>
+    <div class="week-body">
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Marco teórico en borrador <span class="tag t-tesis">Tesis · mañanas</span></div><div class="task-detail">Escribir sin editar. Volcar todo lo que tenés estructurado. Meta: esqueleto del Capítulo 1 completo aunque sea rough.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Publicar link del portafolio en LinkedIn <span class="tag t-li">LinkedIn · 17 hs</span></div><div class="task-detail">Verificar que Notion esté publicado. Agregar el link como "sitio web" en LinkedIn. 15 minutos.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Inscribirse en BID Academy · Accesibilidad en Documentos Digitales <span class="tag t-di">Formación DI</span></div><div class="task-detail">Gratuito, certificado BID. 4-6 hs totales. Conecta directamente con tu experiencia MAI. Arrancar 30 min/día.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Rutina diaria Elsa Speak — 20 min <span class="tag t-en">Inglés · diario</span></div><div class="task-detail">10 min pronunciación + 10 min vocabulario de negocios. Todos los días sin excepción.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Arrancar EduIngnova YouTube — 20 min/mañana <span class="tag t-di">Formación DI</span></div><div class="task-detail">Diplomado completo en DI en español. Empezar por la sesión inaugural: rol del mediador pedagógico.</div></div></div>
+    </div>
+  </div>
+
+  <div class="week-card">
+    <div class="week-head"><span class="week-name">Semana 2</span><span class="week-date">14 de abril</span></div>
+    <div class="week-body">
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Argumentos centrales — primera versión completa <span class="tag t-tesis">Tesis · mañanas</span></div><div class="task-detail">Desarrollar los ejes del capítulo. No buscar perfección — buscar completud. Primera versión completa al viernes.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Post 3 — Las 3 cosas aprendidas con estudiantes con discapacidad <span class="tag t-li">LinkedIn · martes</span></div><div class="task-detail">Ya está redactado. Solo pedir el texto, ajustar y publicar. 20 minutos total.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Terminar BID Accesibilidad + inscripción Coursera Tec de Monterrey <span class="tag t-di">Formación DI</span></div><div class="task-detail">Completar el curso BID. Inscribirse en auditoría gratuita del Tec de Monterrey en Coursera.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Adjuntar materiales bilingües al Proyecto 1 del portafolio <span class="tag t-port">Portafolio</span></div><div class="task-detail">Subir evaluación de Lengua y trabajo práctico de Historia bilingüe como archivos en la subpágina del Proyecto 1.</div></div></div>
+    </div>
+  </div>
+
+  <div class="week-card">
+    <div class="week-head"><span class="week-name">Semana 3</span><span class="week-date">21 de abril</span></div>
+    <div class="week-body">
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Revisión, edición y ajuste de citas — enviar a directora <span class="tag t-tesis">Tesis · mañanas</span></div><div class="task-detail">Versión para compartir con la directora. Viernes: releer en frío. Meta: Capítulo 1 enviado al cierre de la semana.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Post 4 — Proceso hacia el trabajo remoto <span class="tag t-li">LinkedIn · miércoles</span></div><div class="task-detail">"Aprendiendo inglés mientras trabajo y termino la tesis." Ya está redactado.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Módulo 1 Coursera Tec de Monterrey <span class="tag t-di">Formación DI</span></div><div class="task-detail">Primer módulo del curso de DI. ~3 hs repartidas en los días disponibles de la semana.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Practicar elevator pitch en inglés en voz alta <span class="tag t-en">Inglés · diario</span></div><div class="task-detail">"I'm a Communication specialist with experience in instructional design." 5 minutos al día en voz alta.</div></div></div>
+    </div>
+  </div>
+
+  <div class="week-card">
+    <div class="week-head"><span class="week-name">Semana 4</span><span class="week-date">28 de abril</span></div>
+    <div class="week-body">
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Incorporar devoluciones de la directora <span class="tag t-tesis">Tesis · mañanas</span></div><div class="task-detail">Si llegaron las correcciones: incorporarlas. Si no: avanzar con bibliografía o estructura del Capítulo 2.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Módulos 2 y 3 Coursera Tec de Monterrey <span class="tag t-di">Formación DI</span></div><div class="task-detail">Continuar el curso. Ir anotando vocabulario técnico de DI en inglés — doble beneficio.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Post 5 — Ponencia REDCOM 2024 <span class="tag t-li">LinkedIn · martes</span></div><div class="task-detail">Qué investigaste y qué aprendiste del proceso de comunicar ciencia. Pedir el texto cuando llegue el momento.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Adjuntar reflexión de pasantía y guía MCPOI al Proyecto 2 <span class="tag t-port">Portafolio</span></div><div class="task-detail">Subir los dos PDFs en la subpágina del Proyecto 2 usando el bloque /file en Notion.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">BID Academy · Formación en Tutoría en Línea <span class="tag t-di">Formación DI</span></div><div class="task-detail">Inscribirse y arrancar. 6-8 hs totales. Gratuito, certificado BID. Formaliza tu experiencia como tutora becada.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MES 2 ===== -->
+<div class="month-section m2">
+  <div class="month-label">
+    <span class="month-pill">Mes 2 · Mayo – Junio</span>
+    <span class="month-focus">Portafolio completo + Tutorial Loom + Articulate Rise</span>
+  </div>
+
+  <div class="week-card">
+    <div class="week-head"><span class="week-name">Semana 5</span><span class="week-date">5 de mayo</span></div>
+    <div class="week-body">
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Elegir tema y escribir guion del tutorial Loom <span class="tag t-port">Portafolio · lunes</span></div><div class="task-detail">5 puntos clave. Sugerencia: "Cómo organizar Google Drive para trabajo remoto". Guion en papel o Notion.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Grabar tutorial en Loom — 4 a 6 minutos <span class="tag t-port">Portafolio · miércoles</span></div><div class="task-detail">Sin editar, en crudo está bien. Primera toma cuenta. Subir al canal y guardar el link.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Activar trial Articulate Rise 360 — 60 días <span class="tag t-di">Formación DI</span></div><div class="task-detail">Crear cuenta y explorar la interfaz los primeros 2 días sin crear nada. Solo familiarizarse.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Post 6 — Reflexión sobre explicar bien vs. explicar claro <span class="tag t-li">LinkedIn · miércoles</span></div><div class="task-detail">Genera conversación. Pedir el texto cuando llegue el momento.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Terminar BID Tutoría en Línea <span class="tag t-di">Formación DI</span></div><div class="task-detail">Completar el curso BID. Guardar el certificado para el portafolio y LinkedIn.</div></div></div>
+    </div>
+  </div>
+
+  <div class="week-card">
+    <div class="week-head"><span class="week-name">Semana 6</span><span class="week-date">12 de mayo</span></div>
+    <div class="week-body">
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Crear módulo demo en Articulate Rise — 5 a 8 pantallas <span class="tag t-di">Formación DI</span></div><div class="task-detail">Tema sugerido: "Cómo adaptar materiales para distintos perfiles de aprendizaje". Esa pieza va directo al portafolio.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Agregar tutorial Loom al Proyecto 4 del portafolio <span class="tag t-port">Portafolio</span></div><div class="task-detail">Embeber el video en la subpágina. Actualizar el texto con el link real.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Módulos finales Coursera Tec de Monterrey <span class="tag t-di">Formación DI</span></div><div class="task-detail">Completar el curso. Guardar el proyecto final — es una pieza de portafolio.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Inscribirse en Genially Academy · Microlearning <span class="tag t-di">Formación DI</span></div><div class="task-detail">Gratuito, módulos de 1-3 hs. Baja curva si ya usás Canva. Para crear piezas visuales interactivas.</div></div></div>
+    </div>
+  </div>
+
+  <div class="week-card">
+    <div class="week-head"><span class="week-name">Semana 7</span><span class="week-date">19 de mayo</span></div>
+    <div class="week-body">
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Agregar módulo Rise al Proyecto 4 del portafolio <span class="tag t-port">Portafolio</span></div><div class="task-detail">Captura o link del módulo. El portafolio ahora tiene 3 piezas concretas: caso de diseño + Loom + Rise.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Post 7 — Historia INADI y diversidad <span class="tag t-li">LinkedIn · martes</span></div><div class="task-detail">Experiencia en comunicación contra la discriminación. Posicionamiento en nicho DEI.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Primera pieza en Genially — microlearning sencillo <span class="tag t-di">Formación DI</span></div><div class="task-detail">Crear una presentación interactiva breve sobre un tema que domines. Sumar al portafolio.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Inscribirse en Coursera Maryland · Online Learning Design (auditoría) <span class="tag t-di">Formación DI</span></div><div class="task-detail">En inglés. Refuerza vocabulario técnico para entrevistas. Doble beneficio con el instituto.</div></div></div>
+    </div>
+  </div>
+
+  <div class="week-card">
+    <div class="week-head"><span class="week-name">Semana 8</span><span class="week-date">26 de mayo</span></div>
+    <div class="week-body">
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Crear perfil en Torre.ai <span class="tag t-bus">Búsqueda</span></div><div class="task-detail">Mismo posicionamiento que LinkedIn. Explorar roles disponibles sin aplicar todavía.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Post 8 — Balance 2 meses hacia el trabajo remoto <span class="tag t-li">LinkedIn · miércoles</span></div><div class="task-detail">Cierre del ciclo de 8 posts. Señal directa de que estás buscando oportunidades.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Primera sesión de conversación en Cambly — 15 min <span class="tag t-en">Inglés</span></div><div class="task-detail">Llevá el elevator pitch preparado. Pedir sesión con foco en vocabulario profesional de DI.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Registrarse en ATD (Assoc. for Talent Development) <span class="tag t-di">Formación DI</span></div><div class="task-detail">Membresía básica gratuita. Asistir a un webinar. Vocabulario técnico L&D en inglés.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MES 3 ===== -->
+<div class="month-section m3">
+  <div class="month-label">
+    <span class="month-pill">Mes 3 · Junio – Julio</span>
+    <span class="month-focus">Búsqueda activa + primeras aplicaciones + networking</span>
+  </div>
+
+  <div class="week-card">
+    <div class="week-head"><span class="week-name">Semana 9</span><span class="week-date">2 de junio</span></div>
+    <div class="week-body">
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Primeras aplicaciones en Torre.ai — 3 a 5 roles <span class="tag t-bus">Búsqueda · 17 hs</span></div><div class="task-detail">Filtrar: "instructional designer", "training specialist", "onboarding" en español. Cover letter personalizada para cada uno.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Conectar 5 personas del área en LinkedIn <span class="tag t-li">LinkedIn · diario</span></div><div class="task-detail">IDs y Training Specialists latinos con trabajo remoto. Comentar sus posts antes de conectar.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Primer desafío E-Learning Heroes (Articulate) <span class="tag t-di">Formación DI</span></div><div class="task-detail">#ELH Challenge semanal. Genera piezas reales de portafolio y visibilidad en la comunidad más activa de ID.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Inscribirse Coursera Minnesota · Hiring and Onboarding (auditoría) <span class="tag t-di">Formación DI</span></div><div class="task-detail">Perspectiva desde People & Culture. Te da el lenguaje del otro lado de la mesa — muy útil en entrevistas.</div></div></div>
+    </div>
+  </div>
+
+  <div class="week-card">
+    <div class="week-head"><span class="week-name">Semana 10</span><span class="week-date">9 de junio</span></div>
+    <div class="week-body">
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Aplicar en LinkedIn Jobs — roles en español <span class="tag t-bus">Búsqueda · 17 hs</span></div><div class="task-detail">Filtro: "instructional design" + "remoto" + "latinoamérica". Priorizar roles sin requisito de inglés avanzado.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Publicar 1 post de contenido propio <span class="tag t-li">LinkedIn · martes</span></div><div class="task-detail">Reflexión sobre lo que estás aprendiendo en los cursos o un tip de comunicación educativa.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Sesión Cambly semanal — foco en entrevistas <span class="tag t-en">Inglés</span></div><div class="task-detail">Practicar respuestas a preguntas típicas de entrevistas de trabajo para roles de ID.</div></div></div>
+    </div>
+  </div>
+
+  <div class="week-card">
+    <div class="week-head"><span class="week-name">Semanas 11 y 12</span><span class="week-date">16 y 23 de junio</span></div>
+    <div class="week-body">
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Ritmo sostenido — 3 a 5 aplicaciones por semana <span class="tag t-bus">Búsqueda · 17 hs</span></div><div class="task-detail">Torre.ai + LinkedIn Jobs + Remotive. Personalizar cada cover letter. No mandar la misma para todos.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">1 post por semana — contenido propio <span class="tag t-li">LinkedIn · martes</span></div><div class="task-detail">Reflexiones, tips, aprendizajes de los cursos. Consistencia por encima de perfección.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Continuar desafíos E-Learning Heroes <span class="tag t-di">Formación DI</span></div><div class="task-detail">Un desafío por semana. Cada pieza es evidencia concreta de habilidades en software de autor.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Sesiones Cambly continuadas + instituto <span class="tag t-en">Inglés · diario</span></div><div class="task-detail">Para este momento el vocabulario técnico de DI en inglés ya debería ser fluido gracias al estudio paralelo.</div></div></div>
+      <div class="task" onclick="toggle(this)"><div class="check"></div><div class="task-body"><div class="task-title">Explorar Upwork — crear perfil freelance <span class="tag t-bus">Búsqueda</span></div><div class="task-detail">Perfil con foco en "Instructional Design" y "Training content". Primeros proyectos en español para construir reputación.</div></div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="div"></div>
+
+<div class="footer">
+  <strong>Regla de oro:</strong> la tesis es la prioridad de las mañanas — siempre.<br>
+  Si una semana la tesis absorbe más de lo esperado, lo primero que se posterga es portafolio o formación — nunca el inglés diario.<br>
+  <strong>Un paso sostenido vale más que cuatro pasos caóticos.</strong>
+</div>
+
+</div>
+
+<script>
+function toggle(el){
+  el.classList.toggle('done');
+  updateStats();
+}
+
+function updateStats(){
+  const all = document.querySelectorAll('.task');
+  const done = document.querySelectorAll('.task.done');
+  const total = all.length;
+  const completed = done.length;
+  const pct = total ? Math.round(completed/total*100) : 0;
+
+  document.getElementById('total-tasks').textContent = total;
+  document.getElementById('done-tasks').textContent = completed;
+  document.getElementById('pct-tasks').textContent = pct + '%';
+  document.getElementById('main-bar').style.width = pct + '%';
+}
+
+updateStats();
+</script>
+</body>
+</html>
